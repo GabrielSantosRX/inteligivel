@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:inteligivel/domain/models/question_model.dart';
+import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/presentation/quiz/quiz_controller.dart';
 import 'package:inteligivel/presentation/quiz/quiz_providers.dart';
 import 'package:inteligivel/presentation/quiz/quiz_state.dart';
@@ -28,10 +28,21 @@ class QuizScreen extends HookConsumerWidget {
         ),
       ),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            'Inteligível',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         body: questions.when(
-          loading: () => const CircularProgressIndicator(),
-          error: (err, stack) => Text('Error: $err'),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => const QuizError(
+            message: 'Algo de errado não está certo!',
+          ),
           data: (questions) => _buildBody(context, ref, pageController, questions),
         ),
         bottomSheet: questions.maybeWhen(
@@ -39,7 +50,7 @@ class QuizScreen extends HookConsumerWidget {
             final quizState = ref.watch(quizControllerProvider);
             if (!quizState.answered) return const SizedBox.shrink();
             return QuizButton(
-              title: pageController.page! + 1 < questions.length ? 'Next Question' : 'See Results',
+              title: pageController.page! + 1 < questions.length ? 'Continuar' : 'Ver resultados',
               onTap: () {
                 ref
                     .read(quizControllerProvider.notifier)

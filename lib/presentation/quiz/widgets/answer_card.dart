@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:inteligivel/presentation/quiz/widgets/circular_icon.dart';
 import 'package:inteligivel/util/box_shadow.dart';
+import 'package:inteligivel/util/app_colors.dart' as app_colors;
 
 class AnswerCard extends HookConsumerWidget {
   final String answer;
@@ -35,14 +36,14 @@ class AnswerCard extends HookConsumerWidget {
         ),
         width: double.infinity,
         decoration: BoxDecoration(
-          //color: Colors.white,
+          color: Colors.white,
           boxShadow: boxShadow,
           border: Border.all(
             color: isDisplayingAnswer
                 ? isCorrect
-                    ? Colors.green
+                    ? app_colors.illuminatingEsmerald
                     : isSelected
-                        ? Colors.red
+                        ? app_colors.orangeRedCrayola
                         : Colors.white
                 : Colors.white,
             width: 4.0,
@@ -64,11 +65,11 @@ class AnswerCard extends HookConsumerWidget {
             ),
             if (isDisplayingAnswer)
               isCorrect
-                  ? const CircularIcon(icon: Icons.check, color: Colors.green)
+                  ? const CircularIcon(icon: Icons.check, color: app_colors.illuminatingEsmerald)
                   : isSelected
                       ? const CircularIcon(
                           icon: Icons.close,
-                          color: Colors.red,
+                          color: app_colors.orangeRedCrayola,
                         )
                       : const SizedBox.shrink()
           ],

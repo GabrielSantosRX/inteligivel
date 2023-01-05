@@ -39,6 +39,7 @@ dependencies:
   equatable: ^2.0.5
   enum_to_string: ^1.0.14
   cupertino_icons: ^1.0.2
+  google_fonts: ^3.0.1
 
   freezed_annotation: ^2.2.0
   json_annotation: ^4.7.0

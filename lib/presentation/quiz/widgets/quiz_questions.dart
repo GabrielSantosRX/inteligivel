@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html_character_entities/html_character_entities.dart';
-import 'package:inteligivel/domain/models/question_model.dart';
+import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/presentation/quiz/quiz_controller.dart';
 import 'package:inteligivel/presentation/quiz/quiz_state.dart';
 import 'package:inteligivel/presentation/quiz/widgets/answer_card.dart';
+
+import 'package:inteligivel/util/app_colors.dart' as app_colors;
 
 class QuizQuestions extends HookConsumerWidget {
   final QuizState state;
@@ -30,26 +32,18 @@ class QuizQuestions extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Question ${index + 1} of ${questions.length}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
+              '${question.category} ${index + 1} ~ ${questions.length}',
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 12.0),
               child: Text(
                 HtmlCharacterEntities.decode(question.question),
-                style: const TextStyle(
-                  //color: Colors.white,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
             const Divider(
-              color: Color.fromARGB(255, 8, 70, 47),
+              color: app_colors.illuminatingEsmerald,
               height: 32.0,
               thickness: 2.0,
               indent: 20.0,
