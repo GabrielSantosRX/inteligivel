@@ -7,7 +7,7 @@ import 'package:inteligivel/domain/models/question/question_model.dart';
 final quizQuestionsProvider = FutureProvider.autoDispose<List<Question>>(
   (ref) => ref.watch(quizRepositoryProvider).getQuestions(
         numQuestions: 3,
-        category: 'estoicismo',
+        category: 'Estoicismo',
       ),
 );
 

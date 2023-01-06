@@ -5,6 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:inteligivel/data/repositories/auth_repository.dart';
 
+final authControllerProvider = StateNotifierProvider<AuthController, void>(
+  (ref) => AuthController(ref)..appStarted(),
+);
+
 class AuthController extends StateNotifier<AsyncValue<void>> {
   final Ref ref;
 
@@ -42,7 +46,3 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     await ref.read(authRepositoryProvider).singOut();
   }
 }
-
-final authControllerProvider = StateNotifierProvider<AuthController, void>(
-  (ref) => AuthController(ref)..appStarted(),
-);

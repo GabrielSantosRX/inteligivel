@@ -5,8 +5,7 @@ import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/presentation/quiz/quiz_controller.dart';
 import 'package:inteligivel/presentation/quiz/quiz_state.dart';
 import 'package:inteligivel/presentation/quiz/widgets/answer_card.dart';
-
-import 'package:inteligivel/util/app_colors.dart' as app_colors;
+import 'package:inteligivel/util/app_colors.dart';
 
 class QuizQuestions extends HookConsumerWidget {
   final QuizState state;
@@ -43,7 +42,7 @@ class QuizQuestions extends HookConsumerWidget {
               ),
             ),
             const Divider(
-              color: app_colors.illuminatingEsmerald,
+              color: AppColors.illuminatingEsmerald,
               height: 32.0,
               thickness: 2.0,
               indent: 20.0,
@@ -52,13 +51,13 @@ class QuizQuestions extends HookConsumerWidget {
             Column(
               children: question.answers
                   .map(
-                    (e) => AnswerCard(
-                      answer: e,
-                      isSelected: e == state.selectedAnswer,
-                      isCorrect: e == question.correctAnswer,
+                    (answer) => AnswerCard(
+                      answer: answer,
+                      isSelected: answer == state.selectedAnswer,
+                      isCorrect: answer == question.correctAnswer,
                       isDisplayingAnswer: state.answered,
                       onTap: () =>
-                          ref.read(quizControllerProvider.notifier).submitAnswer(question, e),
+                          ref.read(quizControllerProvider.notifier).submitAnswer(question, answer),
                     ),
                   )
                   .toList(),

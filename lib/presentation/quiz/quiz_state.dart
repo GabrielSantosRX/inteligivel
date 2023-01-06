@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 
 enum QuizStatus { initial, correct, incorrect, complete }

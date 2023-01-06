@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:inteligivel/presentation/quiz/widgets/circular_icon.dart';
+import 'package:inteligivel/util/app_colors.dart';
 import 'package:inteligivel/util/box_shadow.dart';
-import 'package:inteligivel/util/app_colors.dart' as app_colors;
 
 class AnswerCard extends HookConsumerWidget {
   final String answer;
@@ -41,9 +41,9 @@ class AnswerCard extends HookConsumerWidget {
           border: Border.all(
             color: isDisplayingAnswer
                 ? isCorrect
-                    ? app_colors.illuminatingEsmerald
+                    ? AppColors.illuminatingEsmerald
                     : isSelected
-                        ? app_colors.orangeRedCrayola
+                        ? AppColors.orangeRedCrayola
                         : Colors.white
                 : Colors.white,
             width: 4.0,
@@ -65,11 +65,11 @@ class AnswerCard extends HookConsumerWidget {
             ),
             if (isDisplayingAnswer)
               isCorrect
-                  ? const CircularIcon(icon: Icons.check, color: app_colors.illuminatingEsmerald)
+                  ? const CircularIcon(icon: Icons.check, color: AppColors.illuminatingEsmerald)
                   : isSelected
                       ? const CircularIcon(
                           icon: Icons.close,
-                          color: app_colors.orangeRedCrayola,
+                          color: AppColors.orangeRedCrayola,
                         )
                       : const SizedBox.shrink()
           ],

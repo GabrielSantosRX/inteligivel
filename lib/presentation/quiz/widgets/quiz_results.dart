@@ -44,8 +44,8 @@ class QuizResults extends HookConsumerWidget {
         QuizButton(
           title: 'Responder novamente',
           onTap: () {
-            ref.refresh(quizRepositoryProvider);
-            ref.refresh(quizControllerProvider);
+            ref.invalidate(quizRepositoryProvider);
+            ref.invalidate(quizControllerProvider);
           },
         ),
       ],

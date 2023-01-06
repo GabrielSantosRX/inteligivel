@@ -31,6 +31,7 @@ environment:
 dependencies:
   firebase_core: ^2.3.0
   firebase_auth: ^4.1.5
+  firebase_storage: ^11.0.10
   cloud_firestore: ^4.1.0
 
   dio: ^4.0.0
@@ -40,10 +41,12 @@ dependencies:
   enum_to_string: ^1.0.14
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
+  cached_network_image: ^3.2.3
 
   freezed_annotation: ^2.2.0
   json_annotation: ^4.7.0
 
+  go_router: ^6.0.1
   flutter_hooks: ^0.18.0
 
   riverpod: ^2.1.3

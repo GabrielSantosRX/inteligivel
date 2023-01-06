@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:inteligivel/data/repositories/quiz_repository.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_button.dart';
