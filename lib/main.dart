@@ -1,12 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:inteligivel/firebase/firebase_config.dart';
-import 'package:inteligivel/presentation/quiz/widgets/quiz_error.dart';
-import 'package:inteligivel/presentation/start/start_screen.dart';
 
 import 'package:inteligivel/routes.dart';
 import 'package:inteligivel/util/app_colors.dart';
@@ -59,18 +53,6 @@ class InteligivelApp extends StatelessWidget {
           bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.transparent),
         ),
         routerConfig: routes,
-        // home: FutureBuilder(
-        //   future: _firebaseApp,
-        //   builder: (context, app) {
-        //     if (app.connectionState == ConnectionState.done) {
-        //       return const StartScreen();
-        //     }
-        //     if (app.hasError) {
-        //       return const QuizError(message: 'Não foi possível iniciar o aplicativo.');
-        //     }
-        //     return const Center(child: CircularProgressIndicator());
-        //   },
-        // ),
       ),
     );
   }
