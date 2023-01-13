@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/firebase/firebase_providers.dart';
 
-abstract class BaseQuizRepository {
+abstract class BaseQuestionsRepository {
   Future<List<Question>> getQuestions({
     required int numQuestions,
     required String category,
@@ -10,12 +10,13 @@ abstract class BaseQuizRepository {
   });
 }
 
-final quizRepositoryProvider = Provider<QuizRepository>((ref) => QuizRepository(ref));
+final questionsRepositoryProvider =
+    Provider<QuestionsRepository>((ref) => QuestionsRepository(ref));
 
-class QuizRepository implements BaseQuizRepository {
+class QuestionsRepository implements BaseQuestionsRepository {
   final Ref ref;
 
-  const QuizRepository(this.ref);
+  const QuestionsRepository(this.ref);
 
   @override
   Future<List<Question>> getQuestions({
@@ -27,6 +28,7 @@ class QuizRepository implements BaseQuizRepository {
         .read(firebaseFirestoreProvider)
         .collection('questions')
         .where('category', isEqualTo: category)
+        .limit(numQuestions)
         .get();
 
     return snap.docs.map((doc) => Question.fromDocument(doc)).toList();

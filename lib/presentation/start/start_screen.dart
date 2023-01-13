@@ -1,16 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:inteligivel/util/app_colors.dart';
+import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'package:inteligivel/domain/models/category/category_model.dart';
-import 'package:inteligivel/firebase/firebase_providers.dart';
 import 'package:inteligivel/presentation/quiz/quiz_providers.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_error.dart';
 import 'package:inteligivel/presentation/storage/storage_controller.dart';
-
-import 'package:inteligivel/util/app_colors.dart';
 
 class StartScreen extends HookConsumerWidget {
   const StartScreen({super.key});
@@ -18,81 +16,149 @@ class StartScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<List<Category>> categories = ref.watch(quizCategoriesProvider);
-
     final pageController = usePageController();
 
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFF1FAEE), Color(0xFFF6FFF8)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: AppColors.backgroundLinearGradient,
       ),
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            centerTitle: true,
-            title: Text(
-              'Inteligível',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
+        appBar: AppBar(
           backgroundColor: Colors.transparent,
-          body: Stack(
-            children: [
-              categories.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, _) => const QuizError(
-                  message: 'Alguma coisa deu muito errado!',
-                ),
-                data: (categories) =>
-                    _buildBody(context, ref, pageController, categories..shuffle()),
-              ),
-              Container(
-                  height: 33,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.white, Colors.white.withOpacity(0.0)]))),
-            ],
-          )),
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            'Inteligível',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        body: categories.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => const QuizError(
+            message: 'Alguma coisa deu muito errado!',
+          ),
+          data: (categories) => _buildBody(context, ref, pageController, categories..shuffle()),
+        ),
+      ),
     );
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref, PageController pageController,
       List<Category> categories) {
-    if (categories.isEmpty) return const QuizError(message: 'Ué... estamos sem categorias.');
+    if (categories.isEmpty) {
+      return const QuizError(
+        message: 'Ué... estamos sem categorias.',
+      );
+    }
 
     final storage = ref.read(storageControllerProvider.notifier);
+    final categoriesTitles = categories.map((c) => c.category).toList();
+    final categoriesCards = categories
+        .map(
+          (c) => Hero(
+            tag: c.category,
+            //child: _buildCard(context, c, storage),
+            child: FutureBuilder(
+              future: storage.getCategoryUrlImage(c.category),
+              builder: (context, urlImage) => urlImage.data == null
+                  ? const LinearProgressIndicator(color: AppColors.battleshipGrey)
+                  : Card(
+                      elevation: 3,
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      //color: app_colors.culturedWhite,
+                      child: //GestureDetector(
+                          // onTap: () => {
+                          //   context.goNamed('quiz', params: {'category': c.category})
+                          // },
+                          //child:
+                          Image(
+                        //Ink.image(
+                        // image: NetworkImage(urlImage.data!),
+                        image: CachedNetworkImageProvider(
+                          urlImage.data!,
+                        ),
+                        height: 182,
+                        fit: BoxFit.cover,
+                        loadingBuilder: ((context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return const Center(
+                            child: LinearProgressIndicator(),
+                          );
+                        }),
+                        //colorFilter: index % 2 == 0 ? null : AppColors.greyscale,
+                        // child: InkWell(
+                        //   onTap: () {},
+                        // ),
+                      ),
+                    ),
+            ),
+          ),
+        )
+        .toList();
 
-    return ListView.separated(
-        padding: const EdgeInsets.all(12),
-        itemCount: categories.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          return _buildCard(context, index, categories[index], storage);
-        });
-    // return Card(
-    //   child: Text("${categories.first}"),
-    // );
+    return VerticalCardPager(
+      textStyle: Theme.of(context).textTheme.titleMedium!.merge(
+            const TextStyle(
+              color: Colors.white,
+              fontSize: 42,
+              shadows: <Shadow>[
+                Shadow(
+                  offset: Offset(1.1, 1.1),
+                  blurRadius: 11.1,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ],
+            ),
+          ),
+      titles: categoriesTitles,
+      images: categoriesCards,
+      onPageChanged: (page) {
+        if (page != null && page % 1 == 0) {
+          debugPrint('VerticalCardPager onPageChanged $page');
+        }
+      },
+      onSelectedItem: (index) {
+        debugPrint('VerticalCardPager onSelectedItem $index');
+        context.goNamed('config', params: {'category': categories[index].category});
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => DetailView(
+        //             champion:
+        //                 championsMap[titles[index].toLowerCase()],
+        //           )),
+        // );
+      },
+    );
+
+    // return ListView.separated(
+    //     padding: const EdgeInsets.all(12),
+    //     itemCount: categories.length,
+    //     separatorBuilder: (context, index) => const SizedBox(height: 12),
+    //     itemBuilder: (context, index) {
+    //       return _buildCard(context, index, categories[index], storage);
+    //     });
   }
 
-  Widget _buildCard(BuildContext context, int index, Category c, StorageController storage) => Card(
+  Widget _buildCard(BuildContext context, Category c, StorageController storage) => Card(
       elevation: 3,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(18),
       ),
       //color: app_colors.culturedWhite,
       child: GestureDetector(
-        onTap: () => {
-          context.goNamed('quiz', params: {'category': c.category})
-        },
+        // onTap: () => {
+        //   context.goNamed('quiz', params: {'category': c.category})
+        // },
         child: Stack(
           alignment: Alignment.center,
           children: [

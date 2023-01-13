@@ -41,6 +41,7 @@ dependencies:
   enum_to_string: ^1.0.14
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
+  vertical_card_pager: ^1.5.0
   cached_network_image: ^3.2.3
 
   freezed_annotation: ^2.2.0

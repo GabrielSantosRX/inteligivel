@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:inteligivel/data/repositories/quiz_repository.dart';
+import 'package:inteligivel/data/repositories/questions_repository.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/presentation/quiz/quiz_controller.dart';
 import 'package:inteligivel/presentation/quiz/quiz_state.dart';
@@ -44,7 +44,7 @@ class QuizResults extends HookConsumerWidget {
         QuizButton(
           title: 'Responder novamente',
           onTap: () {
-            ref.invalidate(quizRepositoryProvider);
+            ref.invalidate(questionsRepositoryProvider);
             ref.invalidate(quizControllerProvider);
           },
         ),

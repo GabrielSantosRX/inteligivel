@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:inteligivel/data/repositories/quiz_repository.dart';
+import 'package:inteligivel/data/repositories/questions_repository.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_button.dart';
 
 class QuizError extends HookConsumerWidget {
@@ -26,7 +26,7 @@ class QuizError extends HookConsumerWidget {
           const SizedBox(height: 20.0),
           QuizButton(
             title: 'Tentar novamente',
-            onTap: () => ref.refresh(quizRepositoryProvider),
+            onTap: () => ref.refresh(questionsRepositoryProvider),
           ),
         ],
       ),

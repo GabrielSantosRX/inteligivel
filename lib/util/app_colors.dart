@@ -22,6 +22,12 @@ class AppColors {
   static const cgBlue = MaterialColor(0xFF247BA0, _swatch);
   static const illuminatingEsmerald = MaterialColor(0xFF3D8F81, _swatch);
 
+  static const backgroundLinearGradient = LinearGradient(
+    colors: [Color(0xFFF8F9FA), Color(0xFFE9ECEF)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
   static const greyscale = ColorFilter.matrix(<double>[
     0.2126,
     0.7152,

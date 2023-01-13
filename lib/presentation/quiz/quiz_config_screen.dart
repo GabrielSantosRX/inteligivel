@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:inteligivel/domain/models/category/category_model.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/domain/models/quiz_config/num_questions_enum.dart';
 import 'package:inteligivel/domain/models/quiz_config/quiz_config_model.dart';
@@ -13,13 +14,17 @@ import 'package:inteligivel/presentation/quiz/widgets/quiz_questions.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_results.dart';
 import 'package:inteligivel/util/app_colors.dart';
 
-class QuizScreen extends HookConsumerWidget {
-  const QuizScreen({super.key});
+class QuizConfigScreen extends HookConsumerWidget {
+  static late String categoryCurrent;
+  QuizConfigScreen(String category, {super.key}) {
+    categoryCurrent = category;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<List<Question>> questions = ref.read(quizCategoryQuestionsProvider(
-        QuizConfig(category: 'Estoicos', numQuestions: NumQuestionsEnum.min)));
+        QuizConfig(category: categoryCurrent, numQuestions: NumQuestionsEnum.min)));
+
     final pageController = usePageController();
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -33,7 +38,7 @@ class QuizScreen extends HookConsumerWidget {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            'Inteligível',
+            categoryCurrent,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -43,7 +48,7 @@ class QuizScreen extends HookConsumerWidget {
           error: (error, _) => const QuizError(
             message: 'Algo de errado não está certo!',
           ),
-          data: (questions) => _buildBody(context, ref, pageController, questions),
+          data: (questions) => _buildBody(context, ref, pageController, questions..shuffle()),
         ),
         bottomSheet: questions.maybeWhen(
           data: (questions) {

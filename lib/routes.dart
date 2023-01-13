@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inteligivel/firebase/firebase_config.dart';
+import 'package:inteligivel/presentation/quiz/quiz_config_screen.dart';
 import 'package:inteligivel/presentation/quiz/quiz_screen.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_error.dart';
 import 'package:inteligivel/presentation/start/start_screen.dart';
@@ -29,6 +30,13 @@ final routes = GoRouter(
         );
       },
       routes: <RouteBase>[
+        GoRoute(
+          name: 'config',
+          path: 'quiz/config/:category',
+          builder: (BuildContext context, GoRouterState state) {
+            return QuizConfigScreen(state.params['category']!);
+          },
+        ),
         GoRoute(
           name: 'quiz',
           path: 'quiz/:category',
