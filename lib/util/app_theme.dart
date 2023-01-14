@@ -5,6 +5,9 @@ import 'package:inteligivel/util/app_colors.dart';
 ThemeData get appTheme {
   return ThemeData(
     primarySwatch: AppColors.orangeRedCrayola,
+    appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: AppColors.eerieBlack),
+    ),
     textTheme: TextTheme(
       titleSmall: GoogleFonts.cabinCondensed().merge(
         const TextStyle(

@@ -60,7 +60,6 @@ class StartScreen extends HookConsumerWidget {
         .map(
           (c) => Hero(
             tag: c.category,
-            //child: _buildCard(context, c, storage),
             child: FutureBuilder(
               future: storage.getCategoryUrlImage(c.category),
               builder: (context, urlImage) => urlImage.data == null
@@ -71,15 +70,7 @@ class StartScreen extends HookConsumerWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      //color: app_colors.culturedWhite,
-                      child: //GestureDetector(
-                          // onTap: () => {
-                          //   context.goNamed('quiz', params: {'category': c.category})
-                          // },
-                          //child:
-                          Image(
-                        //Ink.image(
-                        // image: NetworkImage(urlImage.data!),
+                      child: Image(
                         image: CachedNetworkImageProvider(
                           urlImage.data!,
                         ),
@@ -93,10 +84,6 @@ class StartScreen extends HookConsumerWidget {
                             child: LinearProgressIndicator(),
                           );
                         }),
-                        //colorFilter: index % 2 == 0 ? null : AppColors.greyscale,
-                        // child: InkWell(
-                        //   onTap: () {},
-                        // ),
                       ),
                     ),
             ),
@@ -127,96 +114,8 @@ class StartScreen extends HookConsumerWidget {
       },
       onSelectedItem: (index) {
         debugPrint('VerticalCardPager onSelectedItem $index');
-        context.goNamed('config', params: {'category': categories[index].category});
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => DetailView(
-        //             champion:
-        //                 championsMap[titles[index].toLowerCase()],
-        //           )),
-        // );
+        context.goNamed('config', extra: categories[index]);
       },
     );
-
-    // return ListView.separated(
-    //     padding: const EdgeInsets.all(12),
-    //     itemCount: categories.length,
-    //     separatorBuilder: (context, index) => const SizedBox(height: 12),
-    //     itemBuilder: (context, index) {
-    //       return _buildCard(context, index, categories[index], storage);
-    //     });
   }
-
-  Widget _buildCard(BuildContext context, Category c, StorageController storage) => Card(
-      elevation: 3,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
-      //color: app_colors.culturedWhite,
-      child: GestureDetector(
-        // onTap: () => {
-        //   context.goNamed('quiz', params: {'category': c.category})
-        // },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            FutureBuilder(
-              future: storage.getCategoryUrlImage(c.category),
-              builder: (context, urlImage) => urlImage.data == null
-                  ? const LinearProgressIndicator()
-                  : Ink.image(
-                      image: NetworkImage(urlImage.data!),
-                      height: 182,
-                      fit: BoxFit.cover,
-                      //colorFilter: index % 2 == 0 ? null : AppColors.greyscale,
-                      child: InkWell(
-                        onTap: () {},
-                      ),
-                    ),
-            ),
-            Text(
-              c.category,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium!.merge(
-                    const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 42,
-                      shadows: <Shadow>[
-                        Shadow(
-                          offset: Offset(1.1, 1.1),
-                          blurRadius: 11.1,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ],
-                    ),
-                  ),
-            )
-            // ListTile(
-            //   title: Text(c.category),
-            //   //subtitle: Text(c.description),
-            //   onTap: () {},
-            //   leading: const Icon(Icons.place),
-            //   trailing: const Icon(Icons.arrow_forward_ios),
-            // ),
-          ],
-        ),
-      )
-      //  Padding(
-      //   padding: const EdgeInsets.all(16.0),
-      //   child: ListTile(
-      //     title: Text(c.category),
-      //     subtitle: FutureBuilder(
-      //       future: storage.getCategoryUrlImage(c.category),
-      //       builder: (context, urlImage) =>
-      //           urlImage.data == null ? const LinearProgressIndicator() : Text(urlImage.data!),
-      //     ), //c.description),
-      //     onTap: () {},
-      //     leading: const Icon(Icons.place),
-      //     trailing: const Icon(Icons.arrow_forward_ios),
-      //   ),
-      // ),
-      );
 }

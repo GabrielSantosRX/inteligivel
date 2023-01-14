@@ -14,16 +14,27 @@ import 'package:inteligivel/presentation/quiz/widgets/quiz_questions.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_results.dart';
 import 'package:inteligivel/util/app_colors.dart';
 
-class QuizConfigScreen extends HookConsumerWidget {
-  static late String categoryCurrent;
-  QuizConfigScreen(String category, {super.key}) {
-    categoryCurrent = category;
+class QuizConfigScreen extends StatefulHookConsumerWidget {
+  final Category categoryCurrent;
+  const QuizConfigScreen({Key? key, required this.categoryCurrent}) : super(key: key);
+
+  @override
+  QuizConfigScreenState createState() => QuizConfigScreenState();
+}
+
+class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> {
+  static late Category categoryCurrent;
+
+  @override
+  void initState() {
+    categoryCurrent = widget.categoryCurrent;
+    super.initState();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<List<Question>> questions = ref.read(quizCategoryQuestionsProvider(
-        QuizConfig(category: categoryCurrent, numQuestions: NumQuestionsEnum.min)));
+  Widget build(BuildContext context) {
+    final questions = ref.watch(quizCategoryQuestionsProvider(
+        QuizConfig(category: categoryCurrent.category, numQuestions: NumQuestionsEnum.min)));
 
     final pageController = usePageController();
     return Container(
@@ -38,16 +49,14 @@ class QuizConfigScreen extends HookConsumerWidget {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            categoryCurrent,
+            categoryCurrent.category,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         backgroundColor: Colors.transparent,
         body: questions.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => const QuizError(
-            message: 'Algo de errado não está certo!',
-          ),
+          error: (error, _) => QuizError(messageException: error.toString()),
           data: (questions) => _buildBody(context, ref, pageController, questions..shuffle()),
         ),
         bottomSheet: questions.maybeWhen(

@@ -5,7 +5,7 @@ import 'package:inteligivel/domain/models/category/category_model.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/domain/models/quiz_config/quiz_config_model.dart';
 
-final quizCategoryQuestionsProvider = FutureProvider.autoDispose.family<List<Question>, QuizConfig>(
+final quizCategoryQuestionsProvider = FutureProvider.family<List<Question>, QuizConfig>(
   (ref, quizConfig) => ref.watch(questionsRepositoryProvider).getQuestions(
         numQuestions: quizConfig.numQuestions.value,
         category: quizConfig.category,

@@ -5,10 +5,12 @@ import 'package:inteligivel/presentation/quiz/widgets/quiz_button.dart';
 
 class QuizError extends HookConsumerWidget {
   final String message;
+  final String messageException;
 
   const QuizError({
     super.key,
-    required this.message,
+    this.message = 'Algo de errado não está certo!',
+    this.messageException = '',
   });
 
   @override
@@ -20,7 +22,13 @@ class QuizError extends HookConsumerWidget {
           Text(
             message,
             style: const TextStyle(
-              fontSize: 20.0,
+              fontSize: 22.0,
+            ),
+          ),
+          Text(
+            messageException,
+            style: const TextStyle(
+              fontSize: 7.0,
             ),
           ),
           const SizedBox(height: 20.0),
