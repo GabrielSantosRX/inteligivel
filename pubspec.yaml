@@ -44,6 +44,7 @@ dependencies:
   vertical_card_pager: ^1.5.0
   cached_network_image: ^3.2.3
   clippy_flutter: ^2.0.0-nullsafety.1
+  animated_toggle_switch: ^0.6.1
 
   freezed_annotation: ^2.2.0
   json_annotation: ^4.7.0

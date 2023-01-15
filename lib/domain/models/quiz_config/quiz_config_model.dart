@@ -10,5 +10,5 @@ abstract class QuizConfig with _$QuizConfig {
     required NumQuestionsEnum numQuestions,
   }) = _QuizConfig;
 
-  factory QuizConfig.empty() => QuizConfig(category: '', numQuestions: NumQuestionsEnum.infinity);
+  factory QuizConfig.empty() => QuizConfig(category: '', numQuestions: NumQuestionsEnum.all);
 }

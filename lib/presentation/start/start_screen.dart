@@ -26,8 +26,8 @@ class StartScreen extends HookConsumerWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.7,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           centerTitle: true,
           title: Text(
             'Inteligível',

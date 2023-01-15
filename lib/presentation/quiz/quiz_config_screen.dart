@@ -1,3 +1,4 @@
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,6 +27,7 @@ class QuizConfigScreen extends StatefulHookConsumerWidget {
 
 class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerProviderStateMixin {
   static late Category categoryCurrent;
+  int value = 7;
   bool init = false;
 
   late Animation<double> animation;
@@ -77,15 +79,15 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
         gradient: AppColors.backgroundLinearGradient,
       ),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.7,
-          centerTitle: true,
-          title: Text(
-            categoryCurrent.category,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   elevation: 0.7,
+        //   centerTitle: true,
+        //   title: Text(
+        //     categoryCurrent.category,
+        //     style: Theme.of(context).textTheme.titleMedium,
+        //   ),
+        // ),
         backgroundColor: Colors.transparent,
         body: questions.when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -125,7 +127,6 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
             blendMode: BlendMode.dstIn,
             child: Image.network(
               categoryCurrent.image,
-//              'https://firebasestorage.googleapis.com/v0/b/inteligivel-app.appspot.com/o/images%2Fimg_Grecia_Antiga.jpg?alt=media&token=3672cc20-1135-45c6-b6b9-e58941b4312f',
               fit: BoxFit.fitWidth,
               width: double.infinity,
             ),
@@ -136,9 +137,9 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
           child: Stack(
             children: [
               Container(
-                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 100),
                   width: double.infinity,
-                  height: 320,
+                  height: (MediaQuery.of(context).size.height / 3) * 2,
                   child: Stack(
                     children: [
                       AnimatedBorder(animation: animation),
@@ -150,72 +151,93 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                           child: Padding(
                             padding: const EdgeInsets.only(top: 50.0),
                             child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Image.network(categoryCurrent.image,
-                                                width: 40, height: 40),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text("TEMA",
-                                                style: Theme.of(context).textTheme.displaySmall),
-                                            Text(
-                                              '[Subject]',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displaySmall!
-                                                  .merge(const TextStyle(
-                                                      color: AppColors.illuminatingEsmerald)),
-                                            )
-                                          ]),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Container(
-                                            height: 40,
-                                            child: Center(
-                                              child: DifficultyGraph(
-                                                  count: 2), // categoryCurrent.level),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Text(
-                                            "NÍVEL",
-                                            style: Theme.of(context).textTheme.displaySmall,
-                                          ),
-                                          Text(
-                                            '[MODERADO]',
-                                            style: Theme.of(context).textTheme.displaySmall!.merge(
-                                                const TextStyle(
-                                                    color: AppColors.illuminatingEsmerald)),
-                                          )
-                                        ],
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                      Image.network(categoryCurrent.image, width: 40, height: 40),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text("TEMA",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall!
+                                              .merge(const TextStyle(color: AppColors.onyxBlack))),
+                                      Text(
+                                        '[Subject]',
+                                        style: Theme.of(context).textTheme.displaySmall!.merge(
+                                            const TextStyle(color: AppColors.illuminatingEsmerald)),
                                       )
-                                    ],
+                                    ]),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        const SizedBox(
+                                          height: 40,
+                                          child: Center(
+                                            child: DifficultyGraph(
+                                                count: 1), // categoryCurrent.level),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "NÍVEL",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall!
+                                              .merge(const TextStyle(color: AppColors.onyxBlack)),
+                                        ),
+                                        Text(
+                                          '[Moderado]',
+                                          style: Theme.of(context).textTheme.displaySmall!.merge(
+                                              const TextStyle(
+                                                  color: AppColors.illuminatingEsmerald)),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                                  child: Divider(
+                                    color: AppColors.battleshipGrey,
+                                    height: 1,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                                    child: Divider(
-                                      color: Colors.pinkAccent,
-                                      height: 1,
-                                    ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                                  child: Text(categoryCurrent.description,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .merge(const TextStyle(color: AppColors.onyxBlack)),
+                                      maxLines: 6,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                                  child: Divider(
+                                    color: AppColors.battleshipGrey,
+                                    height: 1,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                                    child: Text(categoryCurrent.description,
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                        maxLines: 6,
-                                        overflow: TextOverflow.ellipsis),
-                                  )
-                                ]),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                                  child: AnimatedToggleSwitch<int>.rolling(
+                                    current: value,
+                                    indicatorSize: Size.fromWidth(71),
+                                    values: const [0, 1, 2, 3],
+                                    onChanged: (i) => setState(() => value = i),
+                                    iconBuilder: rollingIconBuilder,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )
@@ -225,6 +247,22 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
           ),
         ),
       ],
+    );
+  }
+
+  Widget iconBuilder(int value, Size iconSize) {
+    return rollingIconBuilder(value, iconSize, false);
+  }
+
+  Widget rollingIconBuilder(int value, Size iconSize, bool foreground) {
+    if (value == 3) {
+      return Icon(
+        Icons.all_inclusive,
+        size: iconSize.shortestSide,
+      );
+    }
+    return CircleAvatar(
+      child: Text(NumQuestionsEnum.getByIndex(value).description),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inteligivel/util/app_colors.dart';
 
 class AnimatedBorder extends StatelessWidget {
   const AnimatedBorder({
@@ -33,7 +34,7 @@ class MyPainter extends CustomPainter {
   MyPainter({required this.value});
 
   final paintBorder = Paint()
-    ..color = Colors.white30
+    ..color = AppColors.gainsboroGrey
     ..style = PaintingStyle.stroke
     ..strokeWidth = 1.0;
 
