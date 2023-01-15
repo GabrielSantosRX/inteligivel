@@ -60,20 +60,20 @@ class StartScreen extends HookConsumerWidget {
         .map(
           (c) => Hero(
             tag: c.category,
-            child: FutureBuilder(
-              future: storage.getCategoryUrlImage(c.category),
-              builder: (context, urlImage) => urlImage.data == null
-                  ? const LinearProgressIndicator(
-                      color: AppColors.onyxBlack,
-                      backgroundColor: AppColors.eerieBlack,
-                    )
-                  : Card(
-                      elevation: 3,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Image(
+            child: Card(
+              elevation: 3,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: FutureBuilder(
+                future: storage.getCategoryUrlImage(c.category),
+                builder: (context, urlImage) => urlImage.data == null
+                    ? const LinearProgressIndicator(
+                        color: AppColors.onyxBlack,
+                        backgroundColor: AppColors.eerieBlack,
+                      )
+                    : Image(
                         image: CachedNetworkImageProvider(
                           urlImage.data!,
                         ),
@@ -91,7 +91,7 @@ class StartScreen extends HookConsumerWidget {
                           );
                         }),
                       ),
-                    ),
+              ),
             ),
           ),
         )

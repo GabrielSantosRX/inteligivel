@@ -4,7 +4,7 @@ import 'package:inteligivel/util/app_colors.dart';
 
 ThemeData get appTheme {
   return ThemeData(
-    primarySwatch: AppColors.orangeRedCrayola,
+    primarySwatch: AppColors.illuminatingEsmerald,
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: AppColors.onyxBlack),
     ),
@@ -48,6 +48,9 @@ ThemeData get appTheme {
           fontWeight: FontWeight.w500,
         ),
       ),
+    ).apply(
+      bodyColor: AppColors.onyxBlack,
+      displayColor: AppColors.illuminatingEsmerald,
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Colors.transparent,
