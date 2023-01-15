@@ -23,8 +23,6 @@ class StorageController extends StateNotifier<AsyncValue<void>> {
     final pathReference = FirestorePath.imgCategory(category);
     final storage = ref.read(storageRepositoryProvider);
 
-    Future.delayed(const Duration(seconds: 10));
-
     final data = await AsyncValue.guard(() => storage.getURLbyRef(pathReference));
 
     return data.when(

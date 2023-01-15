@@ -6,7 +6,7 @@ ThemeData get appTheme {
   return ThemeData(
     primarySwatch: AppColors.orangeRedCrayola,
     appBarTheme: const AppBarTheme(
-      iconTheme: IconThemeData(color: AppColors.eerieBlack),
+      iconTheme: IconThemeData(color: AppColors.onyxBlack),
     ),
     textTheme: TextTheme(
       titleSmall: GoogleFonts.cabinCondensed().merge(
@@ -22,12 +22,24 @@ ThemeData get appTheme {
           fontSize: 26.0,
         ),
       ),
+      displaySmall: const TextStyle(
+        fontSize: 13.0,
+        fontWeight: FontWeight.normal,
+        color: Colors.white,
+        letterSpacing: 1.0,
+      ),
       bodySmall: GoogleFonts.cabinCondensed().merge(
         const TextStyle(
           color: AppColors.battleshipGrey,
           fontSize: 10.0,
           //fontWeight: FontWeight.bold,
         ),
+      ),
+      bodyMedium: const TextStyle(
+        fontSize: 13.0,
+        fontWeight: FontWeight.normal,
+        color: Colors.white,
+        letterSpacing: 1.0,
       ),
       bodyLarge: GoogleFonts.ebGaramond().merge(
         const TextStyle(

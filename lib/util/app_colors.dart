@@ -14,9 +14,12 @@ class AppColors {
     900: Color.fromRGBO(136, 14, 79, 1),
   };
 
-  static const eerieBlack = MaterialColor(0xFF1F1F1E, _swatch);
-  static const battleshipGrey = MaterialColor(0xFF878782, _swatch);
   static const culturedWhite = MaterialColor(0xFFF8F9FA, _swatch);
+  static const culturedGrey = MaterialColor(0xFFE9ECEF, _swatch);
+  static const gainsboroGrey = MaterialColor(0xFFDEE2E6, _swatch);
+  static const battleshipGrey = MaterialColor(0xFF878782, _swatch);
+  static const onyxBlack = MaterialColor(0xFF343A40, _swatch);
+  static const eerieBlack = MaterialColor(0xFF1F1F1E, _swatch);
   static const orangeRedCrayola = MaterialColor(0xFFF25F5C, _swatch);
   static const naplesYellow = MaterialColor(0xFFFFE066, _swatch);
   static const cgBlue = MaterialColor(0xFF247BA0, _swatch);

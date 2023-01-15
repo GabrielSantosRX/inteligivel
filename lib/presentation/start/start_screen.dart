@@ -26,8 +26,8 @@ class StartScreen extends HookConsumerWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          backgroundColor: Colors.white,
+          elevation: 0.7,
           centerTitle: true,
           title: Text(
             'Inteligível',
@@ -63,7 +63,10 @@ class StartScreen extends HookConsumerWidget {
             child: FutureBuilder(
               future: storage.getCategoryUrlImage(c.category),
               builder: (context, urlImage) => urlImage.data == null
-                  ? const LinearProgressIndicator(color: AppColors.battleshipGrey)
+                  ? const LinearProgressIndicator(
+                      color: AppColors.onyxBlack,
+                      backgroundColor: AppColors.eerieBlack,
+                    )
                   : Card(
                       elevation: 3,
                       clipBehavior: Clip.antiAlias,
@@ -81,7 +84,10 @@ class StartScreen extends HookConsumerWidget {
                             return child;
                           }
                           return const Center(
-                            child: LinearProgressIndicator(),
+                            child: LinearProgressIndicator(
+                              color: AppColors.onyxBlack,
+                              backgroundColor: AppColors.eerieBlack,
+                            ),
                           );
                         }),
                       ),
