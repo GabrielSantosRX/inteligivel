@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
-import 'package:inteligivel/domain/models/quiz_config/num_questions_enum.dart';
 import 'package:inteligivel/domain/models/quiz_config/quiz_config_model.dart';
 import 'package:inteligivel/presentation/quiz/quiz_controller.dart';
 import 'package:inteligivel/presentation/quiz/quiz_providers.dart';
@@ -13,13 +12,42 @@ import 'package:inteligivel/presentation/quiz/widgets/quiz_questions.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_results.dart';
 import 'package:inteligivel/util/app_colors.dart';
 
-class QuizScreen extends HookConsumerWidget {
-  const QuizScreen({super.key});
+class QuizScreen extends StatefulHookConsumerWidget {
+  final String? category;
+  final String? numQuestions;
+  const QuizScreen({
+    Key? key,
+    required this.category,
+    required this.numQuestions,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<List<Question>> questions = ref.read(quizCategoryQuestionsProvider(
-        QuizConfig(category: 'Estoicos', numQuestions: NumQuestionsEnum.min)));
+  QuizScreenState createState() => QuizScreenState();
+}
+
+class QuizScreenState extends ConsumerState<QuizScreen> {
+  late String categoryCurrent;
+  late int numQuestions;
+
+  @override
+  void initState() {
+    super.initState();
+    categoryCurrent = widget.category!;
+    numQuestions = int.parse(widget.numQuestions!);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<List<Question>> questions = ref.watch(quizCategoryQuestionsProvider(QuizConfig(
+      category: categoryCurrent,
+      numQuestions: numQuestions,
+    )));
+
     final pageController = usePageController();
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -48,7 +76,7 @@ class QuizScreen extends HookConsumerWidget {
         bottomSheet: questions.maybeWhen(
           data: (questions) {
             final quizState = ref.watch(quizControllerProvider);
-            if (!quizState.answered) return const SizedBox.shrink();
+            if (!quizState.answered) return const SizedBox(height: 50);
             return QuizButton(
               title: pageController.page! + 1 < questions.length ? 'Continuar' : 'Ver resultados',
               onTap: () {

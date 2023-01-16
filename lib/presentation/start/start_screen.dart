@@ -64,7 +64,7 @@ class StartScreen extends HookConsumerWidget {
               elevation: 3,
               clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: FutureBuilder(
                 future: storage.getCategoryUrlImage(c.category),

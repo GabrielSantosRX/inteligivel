@@ -26,7 +26,7 @@ class AppColors {
   static const illuminatingEsmerald = MaterialColor(0xFF3D8F81, _swatch);
 
   static const backgroundLinearGradient = LinearGradient(
-    colors: [Color(0xFFF8F9FA), Color(0xFFE9ECEF)],
+    colors: [Color(0xFFF8F9FA), Color(0xFFDEE2E6)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

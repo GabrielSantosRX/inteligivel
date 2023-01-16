@@ -37,15 +37,19 @@ final routes = GoRouter(
           path: 'quiz/config',
           builder: (BuildContext context, GoRouterState state) {
             Category categoryCurrent = state.extra as Category;
-            return QuizConfigScreen(categoryCurrent: categoryCurrent);
+            return QuizConfigScreen(
+              categoryCurrent: categoryCurrent,
+            );
           },
         ),
         GoRoute(
           name: 'quiz',
-          path: 'quiz',
+          path: 'quiz/:category/:numQuestions',
           builder: (BuildContext context, GoRouterState state) {
-            List<Question> questions = state.extra as List<Question>;
-            return const QuizScreen();
+            return QuizScreen(
+              category: state.params['category'],
+              numQuestions: state.params['numQuestions'],
+            );
           },
         ),
       ],

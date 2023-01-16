@@ -34,7 +34,7 @@ class MyPainter extends CustomPainter {
   MyPainter({required this.value});
 
   final paintBorder = Paint()
-    ..color = AppColors.gainsboroGrey
+    ..color = AppColors.battleshipGrey
     ..style = PaintingStyle.stroke
     ..strokeWidth = 1.0;
 

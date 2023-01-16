@@ -7,8 +7,14 @@ import 'package:inteligivel/domain/models/quiz_config/quiz_config_model.dart';
 
 final quizCategoryQuestionsProvider = FutureProvider.family<List<Question>, QuizConfig>(
   (ref, quizConfig) => ref.watch(questionsRepositoryProvider).getQuestions(
-        numQuestions: quizConfig.numQuestions.value,
+        numQuestions: quizConfig.numQuestions,
         category: quizConfig.category,
+      ),
+);
+
+final categoryQuestionsCountProvider = FutureProvider.family<int, String>(
+  (ref, category) => ref.watch(questionsRepositoryProvider).getQuestionsCount(
+        category: category,
       ),
 );
 

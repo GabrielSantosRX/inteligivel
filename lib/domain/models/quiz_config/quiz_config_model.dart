@@ -7,8 +7,8 @@ part 'quiz_config_model.freezed.dart';
 abstract class QuizConfig with _$QuizConfig {
   factory QuizConfig({
     required String category,
-    required NumQuestionsEnum numQuestions,
+    required int numQuestions,
   }) = _QuizConfig;
 
-  factory QuizConfig.empty() => QuizConfig(category: '', numQuestions: NumQuestionsEnum.all);
+  factory QuizConfig.empty() => QuizConfig(category: '', numQuestions: NumQuestionsEnum.all.value);
 }

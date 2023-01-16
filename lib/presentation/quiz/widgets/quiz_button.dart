@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inteligivel/util/box_shadow.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class QuizButton extends StatelessWidget {
   final String title;
@@ -13,6 +14,8 @@ class QuizButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CountDownController countDownController = CountDownController();
+    countDownController.start;
     return GestureDetector(
       onTap: onTap,
       child: Container(

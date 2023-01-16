@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$QuizConfig {
   String get category => throw _privateConstructorUsedError;
-  NumQuestionsEnum get numQuestions => throw _privateConstructorUsedError;
+  int get numQuestions => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $QuizConfigCopyWith<QuizConfig> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $QuizConfigCopyWith<$Res> {
           QuizConfig value, $Res Function(QuizConfig) then) =
       _$QuizConfigCopyWithImpl<$Res, QuizConfig>;
   @useResult
-  $Res call({String category, NumQuestionsEnum numQuestions});
+  $Res call({String category, int numQuestions});
 }
 
 /// @nodoc
@@ -57,7 +57,7 @@ class _$QuizConfigCopyWithImpl<$Res, $Val extends QuizConfig>
       numQuestions: null == numQuestions
           ? _value.numQuestions
           : numQuestions // ignore: cast_nullable_to_non_nullable
-              as NumQuestionsEnum,
+              as int,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$_QuizConfigCopyWith<$Res>
       __$$_QuizConfigCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String category, NumQuestionsEnum numQuestions});
+  $Res call({String category, int numQuestions});
 }
 
 /// @nodoc
@@ -95,7 +95,7 @@ class __$$_QuizConfigCopyWithImpl<$Res>
       numQuestions: null == numQuestions
           ? _value.numQuestions
           : numQuestions // ignore: cast_nullable_to_non_nullable
-              as NumQuestionsEnum,
+              as int,
     ));
   }
 }
@@ -108,7 +108,7 @@ class _$_QuizConfig implements _QuizConfig {
   @override
   final String category;
   @override
-  final NumQuestionsEnum numQuestions;
+  final int numQuestions;
 
   @override
   String toString() {
@@ -139,12 +139,12 @@ class _$_QuizConfig implements _QuizConfig {
 abstract class _QuizConfig implements QuizConfig {
   factory _QuizConfig(
       {required final String category,
-      required final NumQuestionsEnum numQuestions}) = _$_QuizConfig;
+      required final int numQuestions}) = _$_QuizConfig;
 
   @override
   String get category;
   @override
-  NumQuestionsEnum get numQuestions;
+  int get numQuestions;
   @override
   @JsonKey(ignore: true)
   _$$_QuizConfigCopyWith<_$_QuizConfig> get copyWith =>

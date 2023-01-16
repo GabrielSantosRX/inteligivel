@@ -29,8 +29,8 @@ class QuizConfigScreen extends StatefulHookConsumerWidget {
 
 class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerProviderStateMixin {
   static late Category categoryCurrent;
-  List<Question>? questions;
   int numQuestionsIndex = 0;
+  int maxQuestions = 0;
   bool init = false;
 
   late Animation<double> animation;
@@ -70,10 +70,9 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
 
   @override
   Widget build(BuildContext context) {
-    final categoryQuestions = ref.watch(quizCategoryQuestionsProvider(
-        QuizConfig(category: categoryCurrent.category, numQuestions: NumQuestionsEnum.min)));
-
-    //final pageController = usePageController();
+    final countQuestionsResult = ref.watch(
+      categoryQuestionsCountProvider(categoryCurrent.category),
+    );
 
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -82,34 +81,22 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
         gradient: AppColors.backgroundLinearGradient,
       ),
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Colors.white,
-        //   elevation: 0.7,
-        //   centerTitle: true,
-        //   title: Text(
-        //     categoryCurrent.category,
-        //     style: Theme.of(context).textTheme.titleMedium,
-        //   ),
-        // ),
         backgroundColor: Colors.transparent,
-        body: categoryQuestions.when(
+        body: countQuestionsResult.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => QuizError(messageException: error.toString()),
-          data: (questions) => _buildBody(context, ref, questions..shuffle()),
+          data: (countQuestions) => _buildBody(context, ref, countQuestions),
         ),
-        bottomSheet: categoryQuestions.maybeWhen(
-          data: (questions) {
+        bottomSheet: countQuestionsResult.maybeWhen(
+          data: (countQuestions) {
             return QuizButton(
                 title: 'Iniciar',
                 onTap: () {
                   debugPrint('QuizConfig QuizButton $categoryCurrent');
-                  context.goNamed(
-                    'quiz',
-                    extra: questions.sublist(
-                      0,
-                      NumQuestionsEnum.getByIndex(numQuestionsIndex).value,
-                    ),
-                  );
+                  context.goNamed('quiz', params: {
+                    'category': categoryCurrent.category,
+                    'numQuestions': NumQuestionsEnum.getByIndex(numQuestionsIndex).value.toString(),
+                  });
                 });
           },
           orElse: () => const SizedBox.shrink(),
@@ -118,11 +105,10 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
     );
   }
 
-  _buildBody(BuildContext context, WidgetRef ref, List<Question> questionsShuffle) {
-    if (questionsShuffle.isEmpty) return const QuizError(message: 'Ué... estamos sem perguntas.');
+  _buildBody(BuildContext context, WidgetRef ref, int countQuestions) {
+    if (countQuestions == 0) return const QuizError(message: 'Ué... estamos sem perguntas.');
 
-    questions = questionsShuffle;
-    //final quizState = ref.watch(quizControllerProvider);
+    maxQuestions = countQuestions;
 
     return Stack(
       children: [
@@ -289,7 +275,7 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
       return CircleAvatar(
         backgroundColor: AppColors.illuminatingEsmerald,
         foregroundColor: AppColors.culturedWhite,
-        child: Text(questions!.length.toString()),
+        child: Text(maxQuestions.toString()),
       );
     }
     return CircleAvatar(
