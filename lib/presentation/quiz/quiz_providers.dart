@@ -5,7 +5,7 @@ import 'package:inteligivel/domain/models/category/category_model.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/domain/models/quiz_config/quiz_config_model.dart';
 
-final quizCategoryQuestionsProvider = FutureProvider.family<List<Question>, QuizConfig>(
+final categoryQuestionsProvider = FutureProvider.family<List<Question>, QuizConfig>(
   (ref, quizConfig) => ref.watch(questionsRepositoryProvider).getQuestions(
         numQuestions: quizConfig.numQuestions,
         category: quizConfig.category,
@@ -18,6 +18,6 @@ final categoryQuestionsCountProvider = FutureProvider.family<int, String>(
       ),
 );
 
-final quizCategoriesProvider = FutureProvider.autoDispose<List<Category>>(
+final categoriesProvider = FutureProvider.autoDispose<List<Category>>(
   (ref) => ref.watch(categoriesRepositoryProvider).getAllCategories(),
 );

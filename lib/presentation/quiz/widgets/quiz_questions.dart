@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
@@ -27,44 +28,67 @@ class QuizQuestions extends HookConsumerWidget {
       itemCount: questions.length,
       itemBuilder: (BuildContext context, int index) {
         final question = questions[index];
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '${question.category} ${index + 1} ~ ${questions.length}',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 12.0),
-              child: Text(
-                HtmlCharacterEntities.decode(question.question),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            const Divider(
-              color: AppColors.illuminatingEsmerald,
-              height: 32.0,
-              thickness: 2.0,
-              indent: 20.0,
-              endIndent: 20.0,
-            ),
-            Column(
-              children: question.answers
-                  .map(
-                    (answer) => AnswerCard(
-                      answer: answer,
-                      isSelected: answer == state.selectedAnswer,
-                      isCorrect: answer == question.correctAnswer,
-                      isDisplayingAnswer: state.answered,
-                      onTap: () =>
-                          ref.read(quizControllerProvider.notifier).submitAnswer(question, answer),
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              (question.image.isEmpty)
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: fullScreenHeroWidget(question.image),
                     ),
-                  )
-                  .toList(),
-            ),
-          ],
+              Text(
+                '${index + 1} ~ ${questions.length}',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 12.0),
+                child: Text(
+                  HtmlCharacterEntities.decode(question.question),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+              const Divider(
+                color: AppColors.illuminatingEsmerald,
+                height: 32.0,
+                thickness: 2.0,
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+              Column(
+                children: question.answers
+                    .map(
+                      (answer) => AnswerCard(
+                        answer: answer,
+                        isSelected: answer == state.selectedAnswer,
+                        isCorrect: answer == question.correctAnswer,
+                        isDisplayingAnswer: state.answered,
+                        onTap: () => ref
+                            .read(quizControllerProvider.notifier)
+                            .submitAnswer(question, answer),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 77),
+            ],
+          ),
         );
       },
     );
   }
+
+  Widget fullScreenHeroWidget(String imageURL) => FullScreenWidget(
+        child: Hero(
+          tag: "customTag",
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.network(
+              imageURL,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      );
 }

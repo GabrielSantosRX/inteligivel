@@ -19,6 +19,12 @@ ThemeData get appTheme {
       titleMedium: GoogleFonts.ebGaramond().merge(
         const TextStyle(
           color: AppColors.eerieBlack, // Colors.white,
+          fontSize: 22.0,
+        ),
+      ),
+      titleLarge: GoogleFonts.ebGaramond().merge(
+        const TextStyle(
+          color: AppColors.eerieBlack, // Colors.white,
           fontSize: 26.0,
         ),
       ),

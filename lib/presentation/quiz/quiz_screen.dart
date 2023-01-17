@@ -43,7 +43,7 @@ class QuizScreenState extends ConsumerState<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AsyncValue<List<Question>> questions = ref.watch(quizCategoryQuestionsProvider(QuizConfig(
+    AsyncValue<List<Question>> questions = ref.watch(categoryQuestionsProvider(QuizConfig(
       category: categoryCurrent,
       numQuestions: numQuestions,
     )));
@@ -61,7 +61,7 @@ class QuizScreenState extends ConsumerState<QuizScreen> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            'Inteligível',
+            categoryCurrent,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -78,7 +78,7 @@ class QuizScreenState extends ConsumerState<QuizScreen> {
             final quizState = ref.watch(quizControllerProvider);
             if (!quizState.answered) return const SizedBox(height: 50);
             return QuizButton(
-              title: pageController.page! + 1 < questions.length ? 'Continuar' : 'Ver resultados',
+              title: pageController.page! + 1 < questions.length ? 'Continuar' : 'Finalizar',
               onTap: () {
                 ref
                     .read(quizControllerProvider.notifier)

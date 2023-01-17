@@ -45,7 +45,7 @@ dependencies:
   cached_network_image: ^3.2.3
   clippy_flutter: ^2.0.0-nullsafety.1
   animated_toggle_switch: ^0.6.1
-  circular_countdown_timer: ^0.2.3
+  full_screen_image_null_safe: ^2.0.0
 
   freezed_annotation: ^2.2.0
   json_annotation: ^4.7.0

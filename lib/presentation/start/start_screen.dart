@@ -15,8 +15,7 @@ class StartScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<List<Category>> categories = ref.watch(quizCategoriesProvider);
-    final pageController = usePageController();
+    AsyncValue<List<Category>> categories = ref.watch(categoriesProvider);
 
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -40,21 +39,19 @@ class StartScreen extends HookConsumerWidget {
           error: (error, _) => const QuizError(
             message: 'Alguma coisa deu muito errado!',
           ),
-          data: (categories) => _buildBody(context, ref, pageController, categories..shuffle()),
+          data: (categories) => _buildBody(context, ref, categories..shuffle()),
         ),
       ),
     );
   }
 
-  Widget _buildBody(BuildContext context, WidgetRef ref, PageController pageController,
-      List<Category> categories) {
+  Widget _buildBody(BuildContext context, WidgetRef ref, List<Category> categories) {
     if (categories.isEmpty) {
       return const QuizError(
         message: 'Ué... estamos sem categorias.',
       );
     }
 
-    final storage = ref.read(storageControllerProvider.notifier);
     final categoriesTitles = categories.map((c) => c.category).toList();
     final categoriesCards = categories
         .map(
@@ -66,31 +63,23 @@ class StartScreen extends HookConsumerWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: FutureBuilder(
-                future: storage.getCategoryUrlImage(c.category),
-                builder: (context, urlImage) => urlImage.data == null
-                    ? const LinearProgressIndicator(
-                        color: AppColors.onyxBlack,
-                        backgroundColor: AppColors.eerieBlack,
-                      )
-                    : Image(
-                        image: CachedNetworkImageProvider(
-                          urlImage.data!,
-                        ),
-                        height: 182,
-                        fit: BoxFit.cover,
-                        loadingBuilder: ((context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return const Center(
-                            child: LinearProgressIndicator(
-                              color: AppColors.onyxBlack,
-                              backgroundColor: AppColors.eerieBlack,
-                            ),
-                          );
-                        }),
-                      ),
+              child: Image(
+                image: CachedNetworkImageProvider(c.image
+                    //urlImage.data!,
+                    ),
+                height: 182,
+                fit: BoxFit.cover,
+                loadingBuilder: ((context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return const Center(
+                    child: LinearProgressIndicator(
+                      color: AppColors.onyxBlack,
+                      backgroundColor: AppColors.eerieBlack,
+                    ),
+                  );
+                }),
               ),
             ),
           ),
@@ -98,7 +87,7 @@ class StartScreen extends HookConsumerWidget {
         .toList();
 
     return VerticalCardPager(
-      textStyle: Theme.of(context).textTheme.titleMedium!.merge(
+      textStyle: Theme.of(context).textTheme.titleLarge!.merge(
             const TextStyle(
               color: Colors.white,
               fontSize: 42,
