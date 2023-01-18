@@ -26,6 +26,7 @@ mixin _$Category {
   String get description => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
   int get level => throw _privateConstructorUsedError;
+  List<int> get rate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +45,8 @@ abstract class $CategoryCopyWith<$Res> {
       String image,
       String description,
       String subject,
-      int level});
+      int level,
+      List<int> rate});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
     Object? description = null,
     Object? subject = null,
     Object? level = null,
+    Object? rate = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -92,6 +95,10 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
           ? _value.level
           : level // ignore: cast_nullable_to_non_nullable
               as int,
+      rate: null == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ) as $Val);
   }
 }
@@ -109,7 +116,8 @@ abstract class _$$_categoryCopyWith<$Res> implements $CategoryCopyWith<$Res> {
       String image,
       String description,
       String subject,
-      int level});
+      int level,
+      List<int> rate});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$_categoryCopyWithImpl<$Res>
     Object? description = null,
     Object? subject = null,
     Object? level = null,
+    Object? rate = null,
   }) {
     return _then(_$_category(
       id: freezed == id
@@ -155,6 +164,10 @@ class __$$_categoryCopyWithImpl<$Res>
           ? _value.level
           : level // ignore: cast_nullable_to_non_nullable
               as int,
+      rate: null == rate
+          ? _value._rate
+          : rate // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ));
   }
 }
@@ -168,8 +181,10 @@ class _$_category extends _category with DiagnosticableTreeMixin {
       required this.image,
       required this.description,
       required this.subject,
-      required this.level})
-      : super._();
+      required this.level,
+      required final List<int> rate})
+      : _rate = rate,
+        super._();
 
   factory _$_category.fromJson(Map<String, dynamic> json) =>
       _$$_categoryFromJson(json);
@@ -186,10 +201,17 @@ class _$_category extends _category with DiagnosticableTreeMixin {
   final String subject;
   @override
   final int level;
+  final List<int> _rate;
+  @override
+  List<int> get rate {
+    if (_rate is EqualUnmodifiableListView) return _rate;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rate);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Category(id: $id, category: $category, image: $image, description: $description, subject: $subject, level: $level)';
+    return 'Category(id: $id, category: $category, image: $image, description: $description, subject: $subject, level: $level, rate: $rate)';
   }
 
   @override
@@ -202,7 +224,8 @@ class _$_category extends _category with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('subject', subject))
-      ..add(DiagnosticsProperty('level', level));
+      ..add(DiagnosticsProperty('level', level))
+      ..add(DiagnosticsProperty('rate', rate));
   }
 
   @override
@@ -217,13 +240,14 @@ class _$_category extends _category with DiagnosticableTreeMixin {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.subject, subject) || other.subject == subject) &&
-            (identical(other.level, level) || other.level == level));
+            (identical(other.level, level) || other.level == level) &&
+            const DeepCollectionEquality().equals(other._rate, _rate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, category, image, description, subject, level);
+  int get hashCode => Object.hash(runtimeType, id, category, image, description,
+      subject, level, const DeepCollectionEquality().hash(_rate));
 
   @JsonKey(ignore: true)
   @override
@@ -246,7 +270,8 @@ abstract class _category extends Category {
       required final String image,
       required final String description,
       required final String subject,
-      required final int level}) = _$_category;
+      required final int level,
+      required final List<int> rate}) = _$_category;
   const _category._() : super._();
 
   factory _category.fromJson(Map<String, dynamic> json) = _$_category.fromJson;
@@ -263,6 +288,8 @@ abstract class _category extends Category {
   String get subject;
   @override
   int get level;
+  @override
+  List<int> get rate;
   @override
   @JsonKey(ignore: true)
   _$$_categoryCopyWith<_$_category> get copyWith =>

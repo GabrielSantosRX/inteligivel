@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:inteligivel/firebase/firestore_providers.dart';
+import 'package:inteligivel/util/app_exception.dart';
 
 abstract class BaseStorageRepositories {
   Future<String> getURLbyRef(String pathReference);
@@ -14,7 +15,11 @@ class StorageRepository implements BaseStorageRepositories {
 
   @override
   Future<String> getURLbyRef(String pathReference) async {
-    final storage = ref.read(firestoreProvider);
-    return await storage.ref(pathReference).getDownloadURL();
+    try {
+      final storage = ref.read(firestoreProvider);
+      return await storage.ref(pathReference).getDownloadURL();
+    } catch (e) {
+      throw AppException(inception: runtimeType, message: e.toString());
+    }
   }
 }

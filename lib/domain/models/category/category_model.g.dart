@@ -13,6 +13,7 @@ _$_category _$$_categoryFromJson(Map<String, dynamic> json) => _$_category(
       description: json['description'] as String,
       subject: json['subject'] as String,
       level: json['level'] as int,
+      rate: (json['rate'] as List<dynamic>).map((e) => e as int).toList(),
     );
 
 Map<String, dynamic> _$$_categoryToJson(_$_category instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$$_categoryToJson(_$_category instance) =>
       'description': instance.description,
       'subject': instance.subject,
       'level': instance.level,
+      'rate': instance.rate,
     };

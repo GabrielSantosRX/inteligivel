@@ -24,6 +24,7 @@ class QuizConfigScreen extends StatefulHookConsumerWidget {
 
 class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerProviderStateMixin {
   static late Category categoryCurrent;
+  static late Future<String> categorySubjectImageURL;
   int numQuestionsIndex = 0;
   int maxQuestions = 0;
   bool init = false;
@@ -65,17 +66,11 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
 
   @override
   Widget build(BuildContext context) {
-    final countQuestionsResult = ref.watch(
-      categoryQuestionsCountProvider(categoryCurrent.category),
-    );
-
-    //String imgSubjectURL = 'zzz';
-    final imgSubjectResult = ref
-        .read(storageControllerProvider.notifier)
-        .getSubjectUrlImage(categoryCurrent.subject)
-        .then((value) => print(value));
-
-    //print('img Subject URL $imgSubjectURL');
+    categorySubjectImageURL = ref
+        .read(
+          storageControllerProvider.notifier,
+        )
+        .getSubjectUrlImage(categoryCurrent.subject);
 
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -84,38 +79,21 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
         gradient: AppColors.backgroundLinearGradient,
       ),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: countQuestionsResult.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => QuizError(appException: (error as AppException)),
-          data: (countQuestions) => _buildBody(context, ref, countQuestions),
-        ),
-        bottomSheet: countQuestionsResult.maybeWhen(
-          data: (countQuestions) {
-            return (countQuestions > 0)
-                ? QuizButton(
-                    title: 'Iniciar',
-                    onTap: () {
-                      debugPrint('QuizConfig QuizButton ${categoryCurrent.category}');
-                      context.goNamed('quiz', params: {
-                        'category': categoryCurrent.category,
-                        'numQuestions':
-                            NumQuestionsEnum.getByIndex(numQuestionsIndex).value.toString(),
-                      });
-                    })
-                : const SizedBox.shrink();
-          },
-          orElse: () => const SizedBox.shrink(),
-        ),
-      ),
+          backgroundColor: Colors.transparent,
+          body: _buildBody(context, ref),
+          bottomSheet: QuizButton(
+              title: 'Iniciar',
+              onTap: () {
+                debugPrint('QuizConfig QuizButton ${categoryCurrent.category}');
+                context.goNamed('quiz', params: {
+                  'category': categoryCurrent.category,
+                  'numQuestions': NumQuestionsEnum.getByIndex(numQuestionsIndex).value.toString(),
+                });
+              })),
     );
   }
 
-  _buildBody(BuildContext context, WidgetRef ref, int countQuestions) {
-    if (countQuestions == 0) return const QuizError(message: 'Ué... estamos sem perguntas.');
-
-    maxQuestions = countQuestions;
-
+  _buildBody(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [
         Hero(
@@ -130,9 +108,7 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
             },
             blendMode: BlendMode.dstIn,
             child: Image(
-              image: CachedNetworkImageProvider(
-                categoryCurrent.image,
-              ),
+              image: CachedNetworkImageProvider(categoryCurrent.image),
               fit: BoxFit.fitWidth,
               width: double.infinity,
             ),
@@ -167,15 +143,37 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                    Image(
-                                        image: CachedNetworkImageProvider(
-                                          categoryCurrent.image,
-                                        ),
-                                        width: 40,
-                                        height: 40),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
+                                    FutureBuilder<String>(
+                                        future: categorySubjectImageURL,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                            return const SizedBox(
+                                              height: 40,
+                                              width: 40,
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.battleshipGrey,
+                                              ),
+                                            );
+                                          }
+
+                                          if (snapshot.hasError) {
+                                            print(snapshot.error);
+                                            return const Icon(
+                                              Icons.bug_report,
+                                              color: AppColors.battleshipGrey,
+                                            );
+                                          }
+
+                                          return (snapshot.hasData)
+                                              ? Image(
+                                                  image: CachedNetworkImageProvider(
+                                                    snapshot.data!,
+                                                  ),
+                                                  width: 40,
+                                                  height: 40)
+                                              : const CircularProgressIndicator();
+                                        }),
+                                    const SizedBox(height: 20),
                                     const Text('TEMA'),
                                     Text(
                                       categoryCurrent.subject,
@@ -190,13 +188,11 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                                         height: 40,
                                         child: Center(
                                           child: DifficultyGraph(
-                                              count:
-                                                  categoryCurrent.level), // categoryCurrent.level),
+                                            count: categoryCurrent.level,
+                                          ), // categoryCurrent.level),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
+                                      const SizedBox(height: 20),
                                       const Text('NÍVEL'),
                                       Text(
                                         categoryCurrent.level.toString(),
@@ -235,7 +231,8 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                                   borderColor: AppColors.gainsboroGrey,
                                   indicatorColor: AppColors.illuminatingEsmerald,
                                   indicatorSize: const Size.fromWidth(64),
-                                  values: const [0, 1, 2, 3],
+                                  values:
+                                      List.generate(categoryCurrent.rate.length, (index) => index),
                                   onChanged: (i) => setState(() => numQuestionsIndex = i),
                                   iconBuilder: rollingIconBuilder,
                                 ),
@@ -278,17 +275,10 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
   }
 
   Widget rollingIconBuilder(int numQuestionsIndex, Size iconSize, bool foreground) {
-    if (numQuestionsIndex == 3) {
-      return CircleAvatar(
-        backgroundColor: AppColors.illuminatingEsmerald,
-        foregroundColor: AppColors.culturedWhite,
-        child: Text(maxQuestions.toString()),
-      );
-    }
     return CircleAvatar(
       backgroundColor: AppColors.illuminatingEsmerald,
       foregroundColor: AppColors.culturedWhite,
-      child: Text(NumQuestionsEnum.getByIndex(numQuestionsIndex).description),
+      child: Text(categoryCurrent.rate[numQuestionsIndex].toString()),
     );
   }
 }

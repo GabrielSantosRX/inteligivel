@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:inteligivel/util/app_exception.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
 import 'package:inteligivel/domain/models/category/category_model.dart';
@@ -35,9 +36,7 @@ class StartScreen extends HookConsumerWidget {
         backgroundColor: Colors.transparent,
         body: categories.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => const QuizError(
-            message: 'Alguma coisa deu muito errado!',
-          ),
+          error: (error, _) => QuizError(appException: (error as AppException)),
           data: (categories) => _buildBody(context, ref, categories..shuffle()),
         ),
       ),
@@ -63,9 +62,7 @@ class StartScreen extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Image(
-                image: CachedNetworkImageProvider(c.image
-                    //urlImage.data!,
-                    ),
+                image: CachedNetworkImageProvider(c.image),
                 height: 182,
                 fit: BoxFit.cover,
                 loadingBuilder: ((context, child, loadingProgress) {

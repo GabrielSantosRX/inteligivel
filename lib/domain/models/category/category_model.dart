@@ -16,18 +16,19 @@ abstract class Category with _$Category {
     required String description,
     required String subject,
     required int level,
+    required List<int> rate,
   }) = _category;
 
   factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
-      category: map['category'] ?? '',
-      image: map['image'] ?? '',
-      description: map['description'] ?? '',
-      subject: map['subject'] ?? '',
-      level: map['level'] ?? 1,
-    );
+        category: map['category'] ?? '',
+        image: map['image'] ?? '',
+        description: map['description'] ?? '',
+        subject: map['subject'] ?? '',
+        level: map['level'] ?? 1,
+        rate: List<int>.from(map['rate'] ?? []));
   }
 
   factory Category.fromDocument(DocumentSnapshot doc) {

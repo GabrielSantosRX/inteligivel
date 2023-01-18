@@ -37,19 +37,33 @@ class QuizQuestions extends HookConsumerWidget {
                   ? const SizedBox.shrink()
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: fullScreenHeroWidget(question.image),
+                      child: FullScreenWidget(
+                        child: Hero(
+                          tag: "imgQuestion",
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image(
+                              image: CachedNetworkImageProvider(question.image),
+                              fit: BoxFit.cover,
+                              height: MediaQuery.of(context).size.height / 2,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
               Text(
                 '${index + 1} ~ ${questions.length}',
                 style: Theme.of(context).textTheme.titleSmall,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 12.0),
-                child: Text(
-                  HtmlCharacterEntities.decode(question.question),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
+              (question.question.isEmpty)
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 12.0),
+                      child: Text(
+                        HtmlCharacterEntities.decode(question.question),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
               const Divider(
                 color: AppColors.illuminatingEsmerald,
                 height: 32.0,
@@ -79,17 +93,4 @@ class QuizQuestions extends HookConsumerWidget {
       },
     );
   }
-
-  Widget fullScreenHeroWidget(String imageURL) => FullScreenWidget(
-        child: Hero(
-          tag: "imgQuestion",
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image(
-              image: CachedNetworkImageProvider(imageURL),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      );
 }
