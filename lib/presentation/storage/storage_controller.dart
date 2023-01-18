@@ -31,4 +31,17 @@ class StorageController extends StateNotifier<AsyncValue<void>> {
       data: (url) => url,
     );
   }
+
+  Future<String> getSubjectUrlImage(String subject) async {
+    final pathReference = FirestorePath.imgSubject(subject);
+    final storage = ref.read(storageRepositoryProvider);
+
+    final data = await AsyncValue.guard(() => storage.getURLbyRef(pathReference));
+
+    return data.when(
+      loading: () => FirestorePath.imgFallback(),
+      error: (error, _) => FirestorePath.imgFallback(),
+      data: (url) => url,
+    );
+  }
 }

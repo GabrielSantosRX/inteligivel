@@ -1,23 +1,18 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:inteligivel/domain/models/category/category_model.dart';
-import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/domain/models/quiz_config/num_questions_enum.dart';
-import 'package:inteligivel/domain/models/quiz_config/quiz_config_model.dart';
-import 'package:inteligivel/presentation/quiz/quiz_controller.dart';
 import 'package:inteligivel/presentation/quiz/quiz_providers.dart';
-import 'package:inteligivel/presentation/quiz/quiz_state.dart';
 import 'package:inteligivel/presentation/quiz/widgets/animated_border.dart';
 import 'package:inteligivel/presentation/quiz/widgets/difficulty_graph.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_button.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_error.dart';
-import 'package:inteligivel/presentation/quiz/widgets/quiz_questions.dart';
-import 'package:inteligivel/presentation/quiz/widgets/quiz_results.dart';
+import 'package:inteligivel/presentation/storage/storage_controller.dart';
 import 'package:inteligivel/util/app_colors.dart';
+import 'package:inteligivel/util/app_exception.dart';
 
 class QuizConfigScreen extends StatefulHookConsumerWidget {
   final Category categoryCurrent;
@@ -74,6 +69,14 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
       categoryQuestionsCountProvider(categoryCurrent.category),
     );
 
+    //String imgSubjectURL = 'zzz';
+    final imgSubjectResult = ref
+        .read(storageControllerProvider.notifier)
+        .getSubjectUrlImage(categoryCurrent.subject)
+        .then((value) => print(value));
+
+    //print('img Subject URL $imgSubjectURL');
+
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -84,20 +87,23 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
         backgroundColor: Colors.transparent,
         body: countQuestionsResult.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => QuizError(messageException: error.toString()),
+          error: (error, _) => QuizError(appException: (error as AppException)),
           data: (countQuestions) => _buildBody(context, ref, countQuestions),
         ),
         bottomSheet: countQuestionsResult.maybeWhen(
           data: (countQuestions) {
-            return QuizButton(
-                title: 'Iniciar',
-                onTap: () {
-                  debugPrint('QuizConfig QuizButton $categoryCurrent');
-                  context.goNamed('quiz', params: {
-                    'category': categoryCurrent.category,
-                    'numQuestions': NumQuestionsEnum.getByIndex(numQuestionsIndex).value.toString(),
-                  });
-                });
+            return (countQuestions > 0)
+                ? QuizButton(
+                    title: 'Iniciar',
+                    onTap: () {
+                      debugPrint('QuizConfig QuizButton ${categoryCurrent.category}');
+                      context.goNamed('quiz', params: {
+                        'category': categoryCurrent.category,
+                        'numQuestions':
+                            NumQuestionsEnum.getByIndex(numQuestionsIndex).value.toString(),
+                      });
+                    })
+                : const SizedBox.shrink();
           },
           orElse: () => const SizedBox.shrink(),
         ),
@@ -172,7 +178,7 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                                     ),
                                     const Text('TEMA'),
                                     Text(
-                                      '[Subject]',
+                                      categoryCurrent.subject,
                                       style: Theme.of(context).textTheme.displaySmall!.merge(
                                           const TextStyle(color: AppColors.illuminatingEsmerald)),
                                     )
@@ -180,11 +186,12 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      const SizedBox(
+                                      SizedBox(
                                         height: 40,
                                         child: Center(
-                                          child:
-                                              DifficultyGraph(count: 1), // categoryCurrent.level),
+                                          child: DifficultyGraph(
+                                              count:
+                                                  categoryCurrent.level), // categoryCurrent.level),
                                         ),
                                       ),
                                       const SizedBox(
@@ -192,7 +199,7 @@ class QuizConfigScreenState extends ConsumerState<QuizConfigScreen> with TickerP
                                       ),
                                       const Text('NÍVEL'),
                                       Text(
-                                        '[Moderado]',
+                                        categoryCurrent.level.toString(),
                                         style: Theme.of(context).textTheme.displaySmall!.merge(
                                             const TextStyle(color: AppColors.illuminatingEsmerald)),
                                       )

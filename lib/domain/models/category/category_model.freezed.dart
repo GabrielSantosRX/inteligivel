@@ -24,6 +24,8 @@ mixin _$Category {
   String get category => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  String get subject => throw _privateConstructorUsedError;
+  int get level => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +38,13 @@ abstract class $CategoryCopyWith<$Res> {
   factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
       _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
-  $Res call({String? id, String category, String image, String description});
+  $Res call(
+      {String? id,
+      String category,
+      String image,
+      String description,
+      String subject,
+      int level});
 }
 
 /// @nodoc
@@ -56,6 +64,8 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
     Object? category = null,
     Object? image = null,
     Object? description = null,
+    Object? subject = null,
+    Object? level = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -74,6 +84,14 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      subject: null == subject
+          ? _value.subject
+          : subject // ignore: cast_nullable_to_non_nullable
+              as String,
+      level: null == level
+          ? _value.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -85,7 +103,13 @@ abstract class _$$_categoryCopyWith<$Res> implements $CategoryCopyWith<$Res> {
       __$$_categoryCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String category, String image, String description});
+  $Res call(
+      {String? id,
+      String category,
+      String image,
+      String description,
+      String subject,
+      int level});
 }
 
 /// @nodoc
@@ -103,6 +127,8 @@ class __$$_categoryCopyWithImpl<$Res>
     Object? category = null,
     Object? image = null,
     Object? description = null,
+    Object? subject = null,
+    Object? level = null,
   }) {
     return _then(_$_category(
       id: freezed == id
@@ -121,6 +147,14 @@ class __$$_categoryCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      subject: null == subject
+          ? _value.subject
+          : subject // ignore: cast_nullable_to_non_nullable
+              as String,
+      level: null == level
+          ? _value.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -132,7 +166,9 @@ class _$_category extends _category with DiagnosticableTreeMixin {
       {this.id,
       required this.category,
       required this.image,
-      required this.description})
+      required this.description,
+      required this.subject,
+      required this.level})
       : super._();
 
   factory _$_category.fromJson(Map<String, dynamic> json) =>
@@ -146,10 +182,14 @@ class _$_category extends _category with DiagnosticableTreeMixin {
   final String image;
   @override
   final String description;
+  @override
+  final String subject;
+  @override
+  final int level;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Category(id: $id, category: $category, image: $image, description: $description)';
+    return 'Category(id: $id, category: $category, image: $image, description: $description, subject: $subject, level: $level)';
   }
 
   @override
@@ -160,7 +200,9 @@ class _$_category extends _category with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('category', category))
       ..add(DiagnosticsProperty('image', image))
-      ..add(DiagnosticsProperty('description', description));
+      ..add(DiagnosticsProperty('description', description))
+      ..add(DiagnosticsProperty('subject', subject))
+      ..add(DiagnosticsProperty('level', level));
   }
 
   @override
@@ -173,13 +215,15 @@ class _$_category extends _category with DiagnosticableTreeMixin {
                 other.category == category) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.subject, subject) || other.subject == subject) &&
+            (identical(other.level, level) || other.level == level));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, category, image, description);
+  int get hashCode => Object.hash(
+      runtimeType, id, category, image, description, subject, level);
 
   @JsonKey(ignore: true)
   @override
@@ -200,7 +244,9 @@ abstract class _category extends Category {
       {final String? id,
       required final String category,
       required final String image,
-      required final String description}) = _$_category;
+      required final String description,
+      required final String subject,
+      required final int level}) = _$_category;
   const _category._() : super._();
 
   factory _category.fromJson(Map<String, dynamic> json) = _$_category.fromJson;
@@ -213,6 +259,10 @@ abstract class _category extends Category {
   String get image;
   @override
   String get description;
+  @override
+  String get subject;
+  @override
+  int get level;
   @override
   @JsonKey(ignore: true)
   _$$_categoryCopyWith<_$_category> get copyWith =>

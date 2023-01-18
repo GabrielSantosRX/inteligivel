@@ -14,6 +14,8 @@ abstract class Category with _$Category {
     required String category,
     required String image,
     required String description,
+    required String subject,
+    required int level,
   }) = _category;
 
   factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
@@ -23,6 +25,8 @@ abstract class Category with _$Category {
       category: map['category'] ?? '',
       image: map['image'] ?? '',
       description: map['description'] ?? '',
+      subject: map['subject'] ?? '',
+      level: map['level'] ?? 1,
     );
   }
 

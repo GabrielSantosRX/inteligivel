@@ -11,6 +11,7 @@ import 'package:inteligivel/presentation/quiz/widgets/quiz_error.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_questions.dart';
 import 'package:inteligivel/presentation/quiz/widgets/quiz_results.dart';
 import 'package:inteligivel/util/app_colors.dart';
+import 'package:inteligivel/util/app_exception.dart';
 
 class QuizScreen extends StatefulHookConsumerWidget {
   final String? category;
@@ -68,10 +69,8 @@ class QuizScreenState extends ConsumerState<QuizScreen> {
         backgroundColor: Colors.transparent,
         body: questions.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => const QuizError(
-            message: 'Algo de errado não está certo!',
-          ),
-          data: (questions) => _buildBody(context, ref, pageController, questions),
+          error: (error, _) => QuizError(appException: (error as AppException)),
+          data: (questions) => _buildBody(ref, pageController, questions),
         ),
         bottomSheet: questions.maybeWhen(
           data: (questions) {
@@ -98,8 +97,7 @@ class QuizScreenState extends ConsumerState<QuizScreen> {
     );
   }
 
-  _buildBody(BuildContext context, WidgetRef ref, PageController pageController,
-      List<Question> questions) {
+  _buildBody(WidgetRef ref, PageController pageController, List<Question> questions) {
     if (questions.isEmpty) return const QuizError(message: 'Ué... estamos sem perguntas.');
 
     final quizState = ref.watch(quizControllerProvider);

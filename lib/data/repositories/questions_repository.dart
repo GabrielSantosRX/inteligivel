@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:inteligivel/domain/models/question/question_model.dart';
 import 'package:inteligivel/firebase/firebase_providers.dart';
@@ -32,12 +33,13 @@ class QuestionsRepository implements BaseQuestionsRepository {
           .read(firebaseFirestoreProvider)
           .collection('questions')
           .where('category', isEqualTo: category)
-          .limit(numQuestions)
+          //.limit(numQuestions)
           .get();
 
-      return snap.docs.map((doc) => Question.fromDocument(doc)).toList();
-    } on FirebaseException catch (e) {
-      throw AppException(inception: runtimeType, message: e.message);
+      var result = snap.docs.map((doc) => Question.fromDocument(doc)).toList()..shuffle();
+      return (numQuestions > result.length) ? result : result.sublist(0, numQuestions);
+    } catch (e) {
+      throw AppException(inception: runtimeType, message: e.toString());
     }
   }
 
@@ -52,8 +54,8 @@ class QuestionsRepository implements BaseQuestionsRepository {
           .get();
 
       return snap.count;
-    } on FirebaseException catch (e) {
-      throw AppException(inception: runtimeType, message: e.message);
+    } catch (e) {
+      throw AppException(inception: runtimeType, message: e.toString());
     }
   }
 }

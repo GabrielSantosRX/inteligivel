@@ -28,7 +28,7 @@ class DifficultyGraph extends StatelessWidget {
           cutLength: 10.0,
           edge: Edge.RIGHT,
           child: Container(
-            color: count > 0 ? AppColors.cgBlue : AppColors.cgBlue.shade100,
+            color: count > 1 ? AppColors.cgBlue : AppColors.cgBlue.shade100,
             width: 25.0,
             height: 10.0,
           ),
@@ -40,7 +40,7 @@ class DifficultyGraph extends StatelessWidget {
           cutLength: 10.0,
           edge: Edge.RIGHT,
           child: Container(
-            color: count > 1 ? AppColors.cgBlue : AppColors.cgBlue.shade100,
+            color: count > 2 ? AppColors.cgBlue : AppColors.cgBlue.shade100,
             width: 25.0,
             height: 10.0,
           ),

@@ -1,8 +1,8 @@
 class AppException implements Exception {
-  final String? message;
+  final String message;
   final Type inception;
 
-  const AppException({this.message = 'Alguma coisa deu muito errado!', this.inception = Object});
+  const AppException({this.message = 'Falha catastrófica!', this.inception = Object});
 
   String get origin => inception.toString();
 

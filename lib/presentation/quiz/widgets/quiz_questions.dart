@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -81,11 +82,11 @@ class QuizQuestions extends HookConsumerWidget {
 
   Widget fullScreenHeroWidget(String imageURL) => FullScreenWidget(
         child: Hero(
-          tag: "customTag",
+          tag: "imgQuestion",
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              imageURL,
+            borderRadius: BorderRadius.circular(12),
+            child: Image(
+              image: CachedNetworkImageProvider(imageURL),
               fit: BoxFit.cover,
             ),
           ),
